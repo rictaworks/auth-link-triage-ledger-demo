@@ -3,14 +3,16 @@ import { DependencyGraph } from "../domain/graph";
 import { resolveStatusMap } from "../domain/status";
 import { runTriage, type CandidateEvaluation, type ExcludedCandidate, type Recommendation } from "../domain/triage";
 import { OBSERVATION_WINDOW_HOURS, TRIGGER_LOOKBACK_DAYS } from "../config/masterData";
-import type { CaseState } from "../types";
+import type { CaseState, ObservationStatus } from "../types";
 import { resolveCaseOnset } from "./caseOnset";
+import type { StatusMap } from "../domain/status";
 
 export interface TriageApiResult {
   caseId: string | null;
   caseState: CaseState | null;
   windowStart: string;
   windowEnd: string;
+  statuses: Record<string, ObservationStatus>;
   ranked: CandidateEvaluation[];
   excluded: ExcludedCandidate[];
   origins: CandidateEvaluation[];
@@ -18,12 +20,27 @@ export interface TriageApiResult {
   recommendations: Recommendation[];
 }
 
-function emptyResult(caseId: string | null, caseState: CaseState | null, windowStart: Date, windowEnd: Date): TriageApiResult {
+function toStatusRecord(statusMap: StatusMap): Record<string, ObservationStatus> {
+  const record: Record<string, ObservationStatus> = {};
+  for (const [serviceId, entry] of statusMap) {
+    record[serviceId] = entry.status;
+  }
+  return record;
+}
+
+function emptyResult(
+  caseId: string | null,
+  caseState: CaseState | null,
+  windowStart: Date,
+  windowEnd: Date,
+  statusMap: StatusMap
+): TriageApiResult {
   return {
     caseId,
     caseState,
     windowStart: windowStart.toISOString(),
     windowEnd: windowEnd.toISOString(),
+    statuses: toStatusRecord(statusMap),
     ranked: [],
     excluded: [],
     origins: [],
@@ -71,7 +88,7 @@ export async function computeTriage(repo: LedgerRepository, sessionId: string, n
 
   const anyFailing = [...statusMap.values()].some((entry) => entry.status === "failed");
   if (!activeCase || !anyFailing) {
-    return emptyResult(activeCase?.id ?? null, activeCase?.state ?? null, windowStart, windowEnd);
+    return emptyResult(activeCase?.id ?? null, activeCase?.state ?? null, windowStart, windowEnd, statusMap);
   }
 
   const onset = resolveCaseOnset(activeCase.id, observations, windowStart, windowEnd);
@@ -99,6 +116,7 @@ export async function computeTriage(repo: LedgerRepository, sessionId: string, n
     caseState: activeCase.state,
     windowStart: windowStart.toISOString(),
     windowEnd: windowEnd.toISOString(),
+    statuses: toStatusRecord(statusMap),
     ranked: result.ranked,
     excluded: result.excluded,
     origins: result.origins,

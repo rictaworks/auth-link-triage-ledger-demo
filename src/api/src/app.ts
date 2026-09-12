@@ -158,6 +158,11 @@ export function createApp() {
 
   // --- procedure steps ---
 
+  app.get("/api/steps", async (c) => {
+    const rows = await c.get("repo").listAllSteps(c.get("sessionId"));
+    return c.json({ steps: rows.map(toProcedureStep) });
+  });
+
   app.get("/api/services/:id/steps", async (c) => {
     const rows = await c.get("repo").listSteps(c.get("sessionId"), c.req.param("id"));
     return c.json({ steps: rows.map(toProcedureStep) });

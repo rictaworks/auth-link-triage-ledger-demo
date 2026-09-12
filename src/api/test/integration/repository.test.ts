@@ -128,6 +128,21 @@ describe("LedgerRepository 観測とケース", () => {
   });
 });
 
+describe("LedgerRepository 手順の一括取得", () => {
+  it("セッション内の全サービスの手順をまとめて取得できる", async () => {
+    const db = createTestDb();
+    const repo = new LedgerRepository(db);
+    await repo.createSession("s", "2026-01-01T00:00:00Z");
+    await repo.createService("s", { id: "a", name: "A", note: "", createdAt: "2026-01-01T00:00:00Z" });
+    await repo.createService("s", { id: "b", name: "B", note: "", createdAt: "2026-01-01T00:00:00Z" });
+    await repo.replaceSteps("s", "a", [{ id: "s1", body: "手順1" }]);
+    await repo.replaceSteps("s", "b", [{ id: "s2", body: "手順2" }]);
+
+    const all = await repo.listAllSteps("s");
+    expect(all.map((row) => row.service_id).sort()).toEqual(["a", "b"]);
+  });
+});
+
 describe("LedgerRepository 日次リセット", () => {
   it("全セッション・全テーブルを削除する", async () => {
     const db = createTestDb();

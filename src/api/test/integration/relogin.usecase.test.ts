@@ -58,4 +58,18 @@ describe("completeRelogin", () => {
     const cases = await repo.listCases("s");
     expect(cases[0]?.state).toBe("resolved");
   });
+
+  it("起点自身の再ログイン完了後も、同じ起点で手順画面を再取得できる（回帰）", async () => {
+    // 起点(Google)自身が稼働観測に変わると、切り分け上は自己矛盾（self_working）で
+    // 除外され得るが、選択済みの起点は再検証しないため originNotInPredictedSet にならないこと。
+    const { repo, google, gmail } = await setupChain();
+    const later = new Date(NOW.getTime() + 60_000);
+
+    await getReloginPlan(repo, "s", google.id, NOW);
+    await completeRelogin(repo, "s", google.id, later);
+
+    const planAfterCompletingOrigin = await getReloginPlan(repo, "s", google.id, later);
+    expect(planAfterCompletingOrigin.entries.map((e) => e.serviceId)).toEqual([gmail.id]);
+    expect(planAfterCompletingOrigin.skipped).toEqual([google.id]);
+  });
 });

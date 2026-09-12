@@ -38,6 +38,9 @@ node_modules/
 out/
 .vercel
 
+# --- Cloudflare Workers / Wrangler ---
+.wrangler/
+
 # --- Python / FastAPI ---
 __pycache__/
 *.pyc
