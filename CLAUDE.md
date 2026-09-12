@@ -65,6 +65,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - **実装方式：1 issue のワンショットで実装する**（requirements.md 18章）。複数 Issue に分割しない。
 - ブランチワークフロー：`src/**` の変更は main に直接コミット・プッシュせず、必ずブランチを切って `gh pr create` で PR を作成する。`src/**` 以外（このファイル・`DOCS/`・`SPEC/` 等）は main への直接 push を許可する。
+- **AIセッティング（CLAUDE.md本文・`.claude/`配下の設定・エージェント定義等）はPRを作らず、必ずmainブランチで直接コミット・pushすること。** PR化しない。
 - **デモ版のため公開スピードを優先し、正式な code-review・audit・security-gate・report を省略してよい**。フローは `issue → setting & coding → security review → add, commit, push → reviewer & pr-checker → merge → user test` のみとする（merge で本番デプロイされる構成が前提）。
 - コミット前に必ずセキュリティレビューを行うこと。マージ前に必ず reviewer と pr-checker を実行すること（`.claude/agents/` に定義。後述）。
 - TDD 厳守：plan → red test → coding → green test。フロントの確認は curl / wget --mirror / playwright で行う。
