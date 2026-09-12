@@ -37,6 +37,10 @@ node_modules/
 .next/
 out/
 .vercel
+*.tsbuildinfo
+
+# --- Cloudflare Workers / Wrangler ---
+.wrangler/
 
 # --- Python / FastAPI ---
 __pycache__/
