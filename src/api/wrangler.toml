@@ -1,0 +1,28 @@
+name = "auth-link-triage-api"
+main = "src/index.ts"
+compatibility_date = "2026-09-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+ENVIRONMENT = "development"
+
+# デプロイ前に `wrangler d1 create auth_link_triage_db` を実行し、
+# 出力された database_id をここに設定すること（デプロイはユーザー側で実施する）。
+[[d1_databases]]
+binding = "DB"
+database_name = "auth_link_triage_db"
+database_id = "REPLACE_WITH_WRANGLER_D1_CREATE_OUTPUT"
+migrations_dir = "migrations"
+
+# JST 03:00 = UTC 18:00（前日）の日次リセット（requirements.md 20章）。
+[triggers]
+crons = ["0 18 * * *"]
+
+[env.production]
+vars = { ENVIRONMENT = "production" }
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "auth_link_triage_db"
+database_id = "REPLACE_WITH_WRANGLER_D1_CREATE_OUTPUT"
+migrations_dir = "migrations"

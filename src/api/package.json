@@ -1,0 +1,27 @@
+{
+  "name": "auth-link-triage-api",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "build": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "db:migrate:local": "wrangler d1 execute auth_link_triage_db --local --file=migrations/0001_init.sql",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260911.1",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^22.15.0",
+    "better-sqlite3": "^13.0.3",
+    "typescript": "^6.0.3",
+    "vitest": "^3.2.7",
+    "wrangler": "^4.131.1"
+  },
+  "dependencies": {
+    "hono": "^4.13.7"
+  }
+}
