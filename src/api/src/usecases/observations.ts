@@ -66,7 +66,6 @@ export async function recordObservation(
   return {
     observation: {
       id,
-      sessionId,
       serviceId: input.serviceId,
       caseId,
       status: input.status,

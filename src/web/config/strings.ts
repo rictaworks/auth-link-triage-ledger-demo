@@ -57,8 +57,6 @@ export const STRINGS = {
     routeAlternate: "代替経路",
     deleteConfirmTitle: "サービスを削除しますか？",
     deleteConfirmBody: "この操作は取り消せません。削除してよろしいですか。",
-    deleteRejectedHasDependentsHint:
-      "このサービスは他のサービスの提供元になっています。先に連携を削除してから、もう一度お試しください。",
     cycleRejectedTitle: "この連携は登録できません",
     cycleRejectedBody: "以下のサービスをたどる循環になってしまいます。",
     primaryDowngradeConfirmTitle: "既存の主経路を代替経路に変更しますか？",

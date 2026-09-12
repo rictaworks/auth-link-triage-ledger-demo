@@ -14,7 +14,6 @@ export type ServiceKind = "provider" | "dependent" | "relay" | "isolated";
 
 export interface Service {
   id: string;
-  sessionId: string;
   name: string;
   note: string;
   createdAt: string;
@@ -22,7 +21,6 @@ export interface Service {
 
 export interface AuthLink {
   id: string;
-  sessionId: string;
   dependentId: string;
   providerId: string;
   route: Route;
@@ -32,7 +30,6 @@ export interface AuthLink {
 
 export interface ProcedureStep {
   id: string;
-  sessionId: string;
   serviceId: string;
   position: number;
   body: string;
@@ -40,7 +37,6 @@ export interface ProcedureStep {
 
 export interface Observation {
   id: string;
-  sessionId: string;
   serviceId: string;
   caseId: string | null;
   status: ObservationStatus;
@@ -50,7 +46,6 @@ export interface Observation {
 
 export interface TriggerEvent {
   id: string;
-  sessionId: string;
   serviceId: string;
   kind: TriggerKind;
   occurredAt: string;
@@ -58,7 +53,6 @@ export interface TriggerEvent {
 
 export interface TriageCase {
   id: string;
-  sessionId: string;
   state: CaseState;
   openedAt: string;
   resolvedAt: string | null;

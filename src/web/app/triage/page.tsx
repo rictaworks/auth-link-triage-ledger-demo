@@ -108,6 +108,7 @@ export default function TriagePage() {
         {cases.length === 0 ? (
           <p className="empty-state">{STRINGS.common.empty}</p>
         ) : (
+          <div className="table-scroll">
           <table className="data-table">
             <thead>
               <tr>
@@ -126,6 +127,7 @@ export default function TriagePage() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </section>
     </>

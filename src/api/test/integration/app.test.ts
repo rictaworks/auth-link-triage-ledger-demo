@@ -110,6 +110,32 @@ describe("HTTP経路: サービスの作成〜切り分け〜再ログインの�
     expect(completeGmail.caseResolved).toBe(true);
   });
 
+  it("APIレスポンスに sessionId（オーナーキー）を含めない（回帰）", async () => {
+    // sessionId はセッション偽装に使える生の乱数であり、httpOnly Cookieの外へ
+    // 平文で漏らすと意味がなくなるため、レスポンスDTOには含めない。
+    const app = createApp();
+    const env = testEnv();
+
+    const initial = await app.request("/api/services", {}, env);
+    const cookie = getSetCookie(initial);
+    const withCookie = (init: RequestInit = {}): RequestInit => ({
+      ...init,
+      headers: { ...(init.headers ?? {}), cookie, "content-type": "application/json" }
+    });
+
+    const serviceRes = await app.request(
+      "/api/services",
+      withCookie({ method: "POST", body: JSON.stringify({ name: "Google", note: "" }) }),
+      env
+    );
+    const serviceBody = (await serviceRes.json()) as Record<string, unknown>;
+    expect(JSON.stringify(serviceBody)).not.toContain("sessionId");
+
+    const listRes = await app.request("/api/services", withCookie(), env);
+    const listBody = await listRes.json();
+    expect(JSON.stringify(listBody)).not.toContain("sessionId");
+  });
+
   it("別セッション(Cookie無し)からは他人の台帳が見えない", async () => {
     const app = createApp();
     const env = testEnv();

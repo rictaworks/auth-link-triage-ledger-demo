@@ -36,7 +36,7 @@ export async function createService(repo: LedgerRepository, sessionId: string, i
   const id = generateId();
   const createdAt = now.toISOString();
   await repo.createService(sessionId, { id, name, note, createdAt });
-  return { id, sessionId, name, note, createdAt };
+  return { id, name, note, createdAt };
 }
 
 export async function updateService(

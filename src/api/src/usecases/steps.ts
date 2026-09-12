@@ -30,7 +30,6 @@ export async function replaceProcedureSteps(
 
   return steps.map((step, index) => ({
     id: step.id,
-    sessionId,
     serviceId,
     position: index,
     body: step.body

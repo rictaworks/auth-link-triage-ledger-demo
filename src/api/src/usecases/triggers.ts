@@ -33,5 +33,5 @@ export async function recordTriggerEvent(
   const id = generateId();
   await repo.createTrigger(sessionId, { id, serviceId: input.serviceId, kind: input.kind, occurredAt: input.occurredAt });
 
-  return { id, sessionId, serviceId: input.serviceId, kind: input.kind, occurredAt: input.occurredAt };
+  return { id, serviceId: input.serviceId, kind: input.kind, occurredAt: input.occurredAt };
 }

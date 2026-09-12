@@ -13,7 +13,6 @@ export type ExclusionReasonCode = "self_working" | "immediate_path_to_working";
 
 export interface Service {
   id: string;
-  sessionId: string;
   name: string;
   note: string;
   createdAt: string;
@@ -23,7 +22,6 @@ export interface Service {
  * スキーマ簡素化のため既定値 "delayed" を格納し、UI/切り分けロジックの両方で無視する。 */
 export interface AuthLink {
   id: string;
-  sessionId: string;
   dependentId: string;
   providerId: string;
   route: Route;
@@ -33,7 +31,6 @@ export interface AuthLink {
 
 export interface ProcedureStep {
   id: string;
-  sessionId: string;
   serviceId: string;
   position: number;
   body: string;
@@ -41,7 +38,6 @@ export interface ProcedureStep {
 
 export interface Observation {
   id: string;
-  sessionId: string;
   serviceId: string;
   caseId: string | null;
   status: ObservationStatus;
@@ -51,7 +47,6 @@ export interface Observation {
 
 export interface TriggerEvent {
   id: string;
-  sessionId: string;
   serviceId: string;
   kind: TriggerKind;
   occurredAt: string;
@@ -59,7 +54,6 @@ export interface TriggerEvent {
 
 export interface TriageCase {
   id: string;
-  sessionId: string;
   state: CaseState;
   openedAt: string;
   resolvedAt: string | null;
@@ -67,7 +61,6 @@ export interface TriageCase {
 
 export interface CaseOrigin {
   id: string;
-  sessionId: string;
   caseId: string;
   serviceId: string;
   sequence: number;

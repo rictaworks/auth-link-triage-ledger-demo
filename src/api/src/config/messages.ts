@@ -1,7 +1,7 @@
 /**
  * API が返す利用者向け文言（ですます調）の一元管理。
- * ハードコードチェックのテスト（src/api/src/config/messages.test.ts, src/web/test/hardcodedStrings.test.ts）が
- * この設定ファイル外への日本語リテラル混入を検出する。
+ * ハードコードチェックのテスト（src/api/test/hardcodedStrings.test.ts, src/web/test/hardcodedStrings.test.ts）が
+ * この設定ファイル（config/ 配下）外への日本語リテラル混入を検出する。
  */
 export const MESSAGES = {
   serviceNameRequired: "サービス名を入力してください。",

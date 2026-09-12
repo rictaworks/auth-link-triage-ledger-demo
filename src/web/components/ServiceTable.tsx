@@ -53,6 +53,7 @@ export function ServiceTable({ services, links, steps, onChanged }: ServiceTable
 
   return (
     <>
+      <div className="table-scroll">
       <table className="data-table">
         <thead>
           <tr>
@@ -100,6 +101,7 @@ export function ServiceTable({ services, links, steps, onChanged }: ServiceTable
           })}
         </tbody>
       </table>
+      </div>
       <ConfirmDialog
         open={pendingDeleteId !== null}
         title={STRINGS.ledger.deleteConfirmTitle}

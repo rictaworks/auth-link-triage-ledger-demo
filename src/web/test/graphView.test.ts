@@ -3,7 +3,7 @@ import { computeGraphLayout, primaryProviderId, serviceKind } from "@/lib/graphV
 import type { AuthLink, Service } from "@/lib/types";
 
 function service(id: string, name: string): Service {
-  return { id, sessionId: "s", name, note: "", createdAt: "2026-01-01T00:00:00Z" };
+  return { id, name, note: "", createdAt: "2026-01-01T00:00:00Z" };
 }
 
 function link(
@@ -14,7 +14,6 @@ function link(
 ): AuthLink {
   return {
     id: `${dependentId}->${providerId}`,
-    sessionId: "s",
     dependentId,
     providerId,
     route,

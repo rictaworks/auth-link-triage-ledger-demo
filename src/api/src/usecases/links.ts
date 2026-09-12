@@ -71,7 +71,6 @@ export async function createLink(repo: LedgerRepository, sessionId: string, inpu
 
   return {
     id,
-    sessionId,
     dependentId: input.dependentId,
     providerId: input.providerId,
     route: input.route,

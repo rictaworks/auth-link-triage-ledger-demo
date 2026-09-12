@@ -3,6 +3,7 @@ import "./globals.css";
 import { Nav } from "@/components/Nav";
 import { ToastProvider } from "@/components/ToastProvider";
 import { STRINGS } from "@/config/strings";
+import { APP_VERSION } from "@/config/version";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTriangleExclamation, faShieldHalved } from "@fortawesome/free-solid-svg-icons";
 
@@ -27,6 +28,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <span>{STRINGS.app.noPersonalDataNotice}</span>
             </div>
             {children}
+            <p className="field-hint" style={{ textAlign: "right" }}>
+              v{APP_VERSION}
+            </p>
           </main>
         </ToastProvider>
       </body>

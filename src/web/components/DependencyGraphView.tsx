@@ -34,7 +34,9 @@ function statusStroke(status: ObservationStatus | undefined): string {
 }
 
 /**
- * requirements.md 10.1：主経路を実線、代替経路を破線で描いた有向図。即時・遅延を線種（色）で区別する。
+ * requirements.md 10.1：主経路を実線、代替経路を破線で描いた有向図。即時・遅延を線種で区別する。
+ * 色のみに頼らないよう、主経路（実線）のうち即時は無地の実線、遅延は長破線、
+ * 代替経路は短破線とし、線種の組み合わせで3種類すべてを区別できるようにする。
  */
 export function DependencyGraphView({ services, links, statusMap, highlightServiceIds }: DependencyGraphViewProps) {
   if (services.length === 0) {
@@ -61,7 +63,10 @@ export function DependencyGraphView({ services, links, statusMap, highlightServi
           const to = layout.nodeById.get(edge.toId);
           if (!from || !to) return null;
           const isAlternate = edge.route === "alternate";
-          const color = isAlternate ? "#9aa2af" : edge.propagation === "immediate" ? "#c0362c" : "#2f5fd1";
+          const isImmediate = edge.propagation === "immediate";
+          const color = isAlternate ? "#9aa2af" : isImmediate ? "#c0362c" : "#2f5fd1";
+          // 代替経路＝短破線、主経路の遅延＝長破線、主経路の即時＝実線、と線種自体で区別する。
+          const dashArray = isAlternate ? "4 4" : isImmediate ? undefined : "14 5";
           const x1 = from.x + NODE_WIDTH;
           const y1 = from.y + NODE_HEIGHT / 2;
           const x2 = to.x;
@@ -75,7 +80,7 @@ export function DependencyGraphView({ services, links, statusMap, highlightServi
               y2={y2}
               stroke={color}
               strokeWidth={2}
-              strokeDasharray={isAlternate ? "6 4" : undefined}
+              strokeDasharray={dashArray}
               markerEnd="url(#arrow)"
             />
           );
@@ -100,11 +105,25 @@ export function DependencyGraphView({ services, links, statusMap, highlightServi
           );
         })}
       </svg>
-      <ul className="field-hint" style={{ listStyle: "none", padding: 0, display: "flex", gap: 16, flexWrap: "wrap" }}>
-        <li>― {STRINGS.ledger.routePrimary}</li>
-        <li>┄ {STRINGS.ledger.routeAlternate}</li>
-        <li style={{ color: "#c0362c" }}>■ {STRINGS.ledger.propagationImmediate}</li>
-        <li style={{ color: "#2f5fd1" }}>■ {STRINGS.ledger.propagationDelayed}</li>
+      <ul className="field-hint" style={{ listStyle: "none", padding: 0, display: "flex", gap: 16, flexWrap: "wrap", alignItems: "center" }}>
+        <li style={{ display: "flex", alignItems: "center", gap: 4 }}>
+          <svg width="28" height="8" aria-hidden="true">
+            <line x1="0" y1="4" x2="28" y2="4" stroke="#c0362c" strokeWidth={2} />
+          </svg>
+          {STRINGS.ledger.routePrimary}・{STRINGS.ledger.propagationImmediate}
+        </li>
+        <li style={{ display: "flex", alignItems: "center", gap: 4 }}>
+          <svg width="28" height="8" aria-hidden="true">
+            <line x1="0" y1="4" x2="28" y2="4" stroke="#2f5fd1" strokeWidth={2} strokeDasharray="14 5" />
+          </svg>
+          {STRINGS.ledger.routePrimary}・{STRINGS.ledger.propagationDelayed}
+        </li>
+        <li style={{ display: "flex", alignItems: "center", gap: 4 }}>
+          <svg width="28" height="8" aria-hidden="true">
+            <line x1="0" y1="4" x2="28" y2="4" stroke="#9aa2af" strokeWidth={2} strokeDasharray="4 4" />
+          </svg>
+          {STRINGS.ledger.routeAlternate}
+        </li>
       </ul>
     </div>
   );
