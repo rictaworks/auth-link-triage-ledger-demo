@@ -40,7 +40,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 仕様の正は [`requirements.md`](requirements.md) （ER図・DFD・シーケンス図・クラス図・状態遷移図・ユースケース図を含む）。実装前に必ず参照すること。本ファイルには要約と横断的な注意点のみを記す。
 
-**現状（2026-09-13時点）：テンプレート設置のみで実装コードは未着手。** `src/` 以下の実装は最初の（かつ唯一の）Issue で作成する。
+**現状（2026-09-13時点）：Issue #2（唯一のIssue）で `src/api`（Cloudflare Workers API）・`src/web`（Next.js フロントエンド）を実装済み（PR #3、タグ `v01.01.00`）。** 台帳CRUD・観測/契機事象の記録・切り分け（requirements.md 8章）・再ログイン順序（9章）・3画面（台帳・切り分け・手順）が動作する。デプロイ（Cloudflare Pages / Workers / D1の作成含む）は未実施——手順は本ファイル「コマンド」章を参照。
 
 ## アーキテクチャ（requirements.md 2.3 / 5 / 11 が正）
 
@@ -93,7 +93,30 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## コマンド
 
-**未実装のため build/lint/test コマンドは存在しない。** 最初の Issue で Next.js（フロントエンド）・Cloudflare Workers（API）のプロジェクトを `src/` 以下に構築する際に、実際のコマンドをこのファイルに追記すること。テストフレームワークは TypeScript スタック（Jest 等）を想定するが未確定——選定したら `DOCS/TM.md` の記述と整合させて記録すること。
+`src/api/`（Cloudflare Workers）・`src/web/`（Next.js）は別々の npm プロジェクト（モノレポのワークスペース化はしていない）。テストフレームワークは Vitest を採用（DOCS/TM.md の「JavaScript: Jest, Mocha, Jasmine」の代表例の一つとして、Next.js 16 / Cloudflare Workers との親和性からJestではなくVitestを選定）。
+
+### `src/api`（Cloudflare Workers API）
+
+| コマンド | 内容 |
+|---|---|
+| `npm install` | 依存関係のインストール |
+| `npm run dev` | `wrangler dev` でローカル起動（`http://localhost:8787`）。初回は別途 `npm run db:migrate:local` でD1スキーマを適用すること |
+| `npm run db:migrate:local` | ローカルD1に `migrations/0001_init.sql` を適用 |
+| `npm test` | Vitest（`src/**/*.test.ts` の単体テスト・`test/integration/` の結合テスト） |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm run deploy` | `wrangler deploy`（本番デプロイ。事前に `wrangler d1 create` でD1を作成し `wrangler.toml` の `database_id` を設定すること） |
+
+### `src/web`（Next.js フロントエンド・静的書き出し）
+
+| コマンド | 内容 |
+|---|---|
+| `npm install` | 依存関係のインストール |
+| `npm run dev` | `next dev` でローカル起動（`http://localhost:3000`）。開発時のみ `/api/*` を `API_ORIGIN`（既定 `http://127.0.0.1:8787`）へ同一オリジンとしてプロキシする（`next.config.js`） |
+| `npm test` | Vitest + Testing Library（コンポーネント・文字列ハードコード検出テスト） |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm run build` | `next build`（`output: "export"` により `out/` へ静的書き出し。Cloudflare Pages にデプロイする） |
+
+本番では `src/web` の静的書き出しを Cloudflare Pages に、`src/api` を Cloudflare Workers にデプロイし、`/api/*` を Worker Route で振り向けて同一オリジン化する（`org-cube-model-router-demo` と同様の構成）。デプロイ作業自体は本ファイルの運用ルール上ユーザー側で行う。
 
 ## 参照ドキュメント
 
