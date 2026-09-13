@@ -6,6 +6,7 @@
 export const STRINGS = {
   app: {
     title: "連携認証台帳（デモ版）",
+    demoBanner: "これはデモ版です。データはサーバー再起動時にリセットされる場合があります。",
     disclaimer:
       "この画面の切り分け結果は、台帳と申告内容の整合から導いた推定です。提供元の実際の認証状態を照会するものではありません。",
     noPersonalDataNotice:
@@ -14,7 +15,48 @@ export const STRINGS = {
   nav: {
     ledger: "台帳",
     triage: "切り分け",
-    procedures: "手順"
+    procedures: "手順",
+    backToDemos: "← デモ一覧へ"
+  },
+  footer: {
+    legalLink: "利用規約・免責事項・連絡先",
+    copyright: "© 2026 Ricta Works"
+  },
+  consult: {
+    cta: "ご相談はこちら"
+  },
+  legal: {
+    title: "利用規約・免責事項・連絡先",
+    backToApp: "← 連携認証台帳に戻る",
+    termsHeading: "利用規約",
+    terms: [
+      "本サービスはデモンストレーション目的のみで提供されます。商用利用・再配布は禁止します。",
+      "サービスの内容は予告なく変更・停止する場合があります。",
+      "台帳・観測・契機事象等のデータは毎日 JST 03:00 に自動削除されます。",
+      "本サービスの利用に際し、本規約に同意したものとみなします。"
+    ],
+    disclaimerHeading: "免責事項",
+    disclaimers: [
+      "本サービスは提供元サービスの実際の認証状態をネットワーク越しに照会するものではありません。表示される切り分け結果は、利用者が入力した台帳・観測・契機事象の整合から導いた推定です。",
+      "パスワード・ワンタイムコード・復旧コード等の資格情報は一切保持しません。",
+      "本サービスの利用により生じた損害について、Ricta Works は一切の責任を負いません。",
+      "サービスの可用性・正確性・継続性を保証しません。"
+    ],
+    contactHeading: "連絡先",
+    contactLabels: {
+      name: "屋号",
+      address: "住所",
+      phone: "電話",
+      email: "メール",
+      web: "Web",
+      x: "X",
+      github: "GitHub"
+    },
+    contactValues: {
+      name: "Ricta Works",
+      address: "〒190-0022 東京都立川市錦町1丁目4-20 TSCビル5階",
+      phone: "070-5148-0380"
+    }
   },
   common: {
     save: "保存する",
