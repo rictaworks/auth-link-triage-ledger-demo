@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import "@/lib/fontawesome";
 import Script from "next/script";
 import "./globals.css";
 import { Nav } from "@/components/Nav";
