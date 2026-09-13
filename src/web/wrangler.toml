@@ -6,3 +6,9 @@ compatibility_date = "2026-09-01"
 # Pages Functions・_worker.js は使用しないため assets のみのシンプル構成でよい。
 [assets]
 directory = "./out"
+
+# カスタムドメイン（DNS・証明書はCloudflareが自動作成する）。
+# /api/* は src/api 側の env.production.routes がより具体的なパターンとして優先される。
+[[routes]]
+pattern = "auth-link-triage-ledger-demo.rictaworks.jp"
+custom_domain = true

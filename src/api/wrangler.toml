@@ -26,3 +26,9 @@ binding = "DB"
 database_name = "auth_link_triage_db"
 database_id = "eb55b397-0557-4684-9ba2-b16d55f72ba9"
 migrations_dir = "migrations"
+
+# src/web 側のカスタムドメイン（auth-link-triage-ledger-demo.rictaworks.jp）と
+# 同一オリジン化するため、/api/* のみこちらのWorkerへ振り向ける。
+[[env.production.routes]]
+pattern = "auth-link-triage-ledger-demo.rictaworks.jp/api/*"
+zone_name = "rictaworks.jp"
