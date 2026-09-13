@@ -27,6 +27,9 @@ export function Nav() {
             {item.label}
           </Link>
         ))}
+        <a href="https://rictaworks.jp/#demos" className="app-nav-demos-link">
+          {STRINGS.nav.backToDemos}
+        </a>
       </nav>
     </header>
   );
