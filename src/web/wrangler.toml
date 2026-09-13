@@ -1,0 +1,8 @@
+name = "auth-link-triage-web"
+compatibility_date = "2026-09-01"
+
+# Next.js（output: "export"）の静的書き出しを Cloudflare Workers Assets で配信する。
+# rictaworks.jp（Worker名 rictaworks-jp）と同じ「Workers Assets配信」方式。
+# Pages Functions・_worker.js は使用しないため assets のみのシンプル構成でよい。
+[assets]
+directory = "./out"
