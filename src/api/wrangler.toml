@@ -6,12 +6,11 @@ compatibility_flags = ["nodejs_compat"]
 [vars]
 ENVIRONMENT = "development"
 
-# デプロイ前に `wrangler d1 create auth_link_triage_db` を実行し、
-# 出力された database_id をここに設定すること（デプロイはユーザー側で実施する）。
+# 2026-09-13 デスクトップから `wrangler d1 create auth_link_triage_db` を実行し作成済み。
 [[d1_databases]]
 binding = "DB"
 database_name = "auth_link_triage_db"
-database_id = "REPLACE_WITH_WRANGLER_D1_CREATE_OUTPUT"
+database_id = "eb55b397-0557-4684-9ba2-b16d55f72ba9"
 migrations_dir = "migrations"
 
 # JST 03:00 = UTC 18:00（前日）の日次リセット（requirements.md 20章）。
@@ -19,10 +18,11 @@ migrations_dir = "migrations"
 crons = ["0 18 * * *"]
 
 [env.production]
+name = "auth-link-triage-api"
 vars = { ENVIRONMENT = "production" }
 
 [[env.production.d1_databases]]
 binding = "DB"
 database_name = "auth_link_triage_db"
-database_id = "REPLACE_WITH_WRANGLER_D1_CREATE_OUTPUT"
+database_id = "eb55b397-0557-4684-9ba2-b16d55f72ba9"
 migrations_dir = "migrations"
