@@ -17,15 +17,26 @@ function ProceduresContent() {
   const originId = searchParams.get("originId");
   const { services } = useLedger();
   const [plan, setPlan] = useState<ReloginPlan | null>(null);
+  const [resolved, setResolved] = useState(false);
   const [selectedServiceId, setSelectedServiceId] = useState("");
   const { showSuccess, showError } = useToast();
 
   const loadPlan = useCallback(() => {
     if (!originId) {
       setPlan(null);
+      setResolved(false);
       return;
     }
-    apiClient.get<ReloginPlan>(`/api/relogin?originId=${originId}`).then(setPlan);
+    setResolved(false);
+    apiClient
+      .get<ReloginPlan>(`/api/relogin?originId=${originId}`)
+      .then(setPlan)
+      .catch(() => {
+        // ケースが解決済み（進行中の切り分けケースが無い）場合、サーバーは400を返す。
+        // これは異常系ではなく正常な遷移なので、エラー表示ではなく解決済み表示にする。
+        setPlan(null);
+        setResolved(true);
+      });
   }, [originId]);
 
   useEffect(() => {
@@ -38,8 +49,11 @@ function ProceduresContent() {
       showSuccess(STRINGS.procedures.completeSuccess);
       if (result.caseResolved) {
         showSuccess(STRINGS.procedures.caseResolved);
+        setPlan(null);
+        setResolved(true);
+      } else {
+        loadPlan();
       }
-      loadPlan();
     } catch {
       showError(STRINGS.errors.generic);
     }
@@ -56,6 +70,8 @@ function ProceduresContent() {
         </h2>
         {!originId ? (
           <p className="empty-state">{STRINGS.procedures.noOriginSelected}</p>
+        ) : resolved ? (
+          <p className="empty-state">{STRINGS.procedures.caseResolved}</p>
         ) : !plan ? (
           <p>{STRINGS.common.loading}</p>
         ) : (
